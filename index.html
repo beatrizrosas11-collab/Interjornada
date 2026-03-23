@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Retorno ao Expediente · CLT</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #16161f;
+    --border: #1e1e2e;
+    --border2: #252535;
+    --text: #e8e8f0;
+    --text2: #8888a8;
+    --text3: #555570;
+    --cyan: #00d4ff;
+    --violet: #7c6af7;
+    --green: #00e5a0;
+    --amber: #ffb340;
+    --red: #ff4d6d;
+  }
+
+  body.light {
+    --bg: #f0f2f8;
+    --surface: #ffffff;
+    --surface2: #f4f6fb;
+    --border: #dde1ef;
+    --border2: #c8cedd;
+    --text: #0f0f1a;
+    --text2: #555575;
+    --text3: #9090b0;
+    --cyan: #0096bb;
+    --violet: #5b4fd4;
+    --green: #00a871;
+    --amber: #cc8800;
+    --red: #e02040;
+  }
+
+  body.light::before {
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 0%, rgba(124,106,247,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 80% 100%, rgba(0,212,255,0.03) 0%, transparent 60%);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 0%, rgba(124,106,247,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 80% 100%, rgba(0,212,255,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .wrap { width: 100%; max-width: 440px; position: relative; }
+
+  /* Header */
+  .header { margin-bottom: 32px; position: relative; }
+
+  .header-line { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+
+  .clock-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+    position: relative; overflow: hidden;
+  }
+
+  .clock-icon::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(124,106,247,0.15), transparent);
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.5rem;
+    color: var(--text); letter-spacing: -0.03em; line-height: 1;
+  }
+
+  .subtitle {
+    color: var(--text3); font-size: 0.8rem;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    padding-left: 58px; font-family: 'DM Mono', monospace;
+  }
+
+  .theme-btn {
+    position: absolute; top: 0; right: 0;
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    background: var(--surface2);
+    color: var(--text2); font-size: 16px;
+    cursor: pointer; display: flex;
+    align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .theme-btn:hover { border-color: var(--violet); transform: scale(1.1); }
+
+  /* Card */
+  .card { background: var(--surface); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
+  .card-inner { padding: 28px; }
+
+  /* Section label */
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text3); margin-bottom: 10px;
+  }
+
+  /* Toggle */
+  .toggle-section { margin-bottom: 28px; }
+
+  .jornada-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  .toggle-btn {
+    padding: 13px; border-radius: 12px;
+    border: 1.5px solid var(--border2);
+    background: var(--surface2); color: var(--text3);
+    font-family: 'DM Mono', monospace; font-size: 0.85rem; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; text-align: center;
+  }
+
+  .toggle-btn:hover { color: var(--text2); }
+
+  .toggle-btn.active-cyan {
+    border-color: var(--cyan); background: rgba(0,212,255,0.06); color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0,212,255,0.1), inset 0 0 20px rgba(0,212,255,0.04);
+  }
+
+  .toggle-btn.active-violet {
+    border-color: var(--violet); background: rgba(124,106,247,0.06); color: var(--violet);
+    box-shadow: 0 0 20px rgba(124,106,247,0.1), inset 0 0 20px rgba(124,106,247,0.04);
+  }
+
+  /* Fields */
+  .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .field { position: relative; }
+
+  .field label {
+    font-family: 'DM Mono', monospace; font-size: 0.63rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text3); display: block; margin-bottom: 7px;
+  }
+
+  .field-icon { font-size: 11px; margin-right: 4px; opacity: 0.7; }
+
+  input[type="time"] {
+    width: 100%; background: var(--surface2);
+    border: 1.5px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'DM Mono', monospace;
+    font-size: 1.15rem; font-weight: 500;
+    padding: 12px 14px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input[type="time"]:focus {
+    border-color: var(--violet);
+    box-shadow: 0 0 0 3px rgba(124,106,247,0.1);
+  }
+
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5); opacity: 0.5; cursor: pointer;
+  }
+
+  body.light input[type="time"]::-webkit-calendar-picker-indicator { filter: none; }
+
+  .aciona-fields {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 20px;
+    animation: slideUp 0.25s ease;
+  }
+  .aciona-fields.show { display: grid; }
+
+  /* Buttons */
+  .btn-calc {
+    width: 100%; padding: 15px; border-radius: 12px; border: none;
+    background: linear-gradient(135deg, var(--violet) 0%, #5b4fd4 100%);
+    color: #fff; font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.95rem; letter-spacing: 0.02em; cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    position: relative; overflow: hidden; margin-bottom: 10px;
+  }
+
+  .btn-calc::before {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.4s;
+  }
+
+  .btn-calc:hover::before { left: 100%; }
+  .btn-calc:hover { opacity: 0.92; transform: translateY(-1px); }
+  .btn-calc:active { transform: translateY(0); }
+
+  .btn-clear {
+    width: 100%; padding: 11px; border-radius: 12px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text3); font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-clear:hover { color: var(--text2); border-color: var(--border2); }
+
+  .error-msg {
+    background: rgba(255,77,109,0.08); border: 1px solid rgba(255,77,109,0.3);
+    color: #ff8099; border-radius: 10px; padding: 10px 14px;
+    font-size: 0.8rem; margin-top: 12px; display: none;
+    text-align: center; font-family: 'DM Mono', monospace;
+  }
+
+  .divider { border: none; height: 1px; background: var(--border); margin: 0; }
+
+  /* Results */
+  .results-section { display: none; padding: 24px 28px; animation: slideUp 0.3s ease; }
+
+  .results-header {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 16px;
+  }
+
+  .results-title {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3);
+  }
+
+  .status-pill {
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 20px; padding: 4px 10px;
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    color: var(--text3); transition: all 0.3s;
+  }
+
+  .status-pill.ok {
+    background: rgba(0,229,160,0.08); border-color: rgba(0,229,160,0.4);
+    color: rgba(0,229,160,0.8);
+  }
+
+  .status-pill.warn {
+    background: rgba(255,179,64,0.08); border-color: rgba(255,179,64,0.4);
+    color: rgba(255,179,64,0.8);
+  }
+
+  /* Result grid */
+  .result-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-bottom: 20px;
+  }
+
+  .result-card {
+    background: var(--surface2); border-radius: 14px;
+    padding: 16px; border: 1.5px solid var(--border);
+    transition: border-color 0.3s;
+  }
+
+  .result-card.full { grid-column: 1 / -1; }
+
+  .result-card.cyan  { border-color: rgba(0,212,255,0.3);   background: rgba(0,212,255,0.03); }
+  .result-card.green { border-color: rgba(0,229,160,0.3);   background: rgba(0,229,160,0.03); }
+  .result-card.amber { border-color: rgba(255,179,64,0.3);  background: rgba(0,229,160,0.03); }
+  .result-card.red   { border-color: rgba(255,77,109,0.35); background: rgba(255,77,109,0.04); }
+
+  .result-card-label {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px;
+  }
+
+  .result-card.cyan  .result-card-label { color: rgba(0,212,255,0.6); }
+  .result-card.green .result-card-label { color: rgba(0,229,160,0.6); }
+  .result-card.amber .result-card-label { color: rgba(255,179,64,0.6); }
+  .result-card.red   .result-card-label { color: rgba(255,77,109,0.6); }
+
+  .result-card-time {
+    font-family: 'DM Mono', monospace; font-size: 1.7rem;
+    font-weight: 500; letter-spacing: -0.02em;
+    line-height: 1; margin-bottom: 4px;
+  }
+
+  .result-card.cyan  .result-card-time { color: var(--cyan); }
+  .result-card.green .result-card-time { color: var(--green); }
+  .result-card.amber .result-card-time { color: var(--amber); }
+  .result-card.red   .result-card-time { color: var(--red); }
+
+  .result-card-sub { font-size: 0.7rem; color: var(--text3); }
+
+  /* Timeline */
+  .tl-label {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text3); margin-bottom: 14px;
+  }
+
+  .timeline { position: relative; padding-left: 18px; }
+
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 5px; top: 8px; bottom: 8px;
+    width: 1px; background: var(--border2);
+  }
+
+  .tl-item { position: relative; margin-bottom: 16px; padding-left: 14px; }
+  .tl-item:last-child { margin-bottom: 0; }
+
+  .tl-item::before {
+    content: ''; position: absolute;
+    left: -13px; top: 5px; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--border2);
+    border: 2px solid var(--bg); transition: background 0.3s;
+  }
+
+  .tl-item.dot-cyan::before   { background: var(--cyan);   box-shadow: 0 0 8px rgba(0,212,255,0.5); }
+  .tl-item.dot-green::before  { background: var(--green);  box-shadow: 0 0 8px rgba(0,229,160,0.5); }
+  .tl-item.dot-amber::before  { background: var(--amber);  box-shadow: 0 0 6px rgba(255,179,64,0.4); }
+  .tl-item.dot-red::before    { background: var(--red);    box-shadow: 0 0 6px rgba(255,77,109,0.4); }
+
+  .tl-row { display: flex; align-items: baseline; gap: 10px; }
+
+  .tl-time {
+    font-family: 'DM Mono', monospace; font-size: 0.9rem;
+    font-weight: 500; color: var(--text); min-width: 46px;
+  }
+
+  .tl-desc { font-size: 0.78rem; color: var(--text2); line-height: 1.4; }
+
+  /* Alert & success */
+  .alerta {
+    border-radius: 14px; padding: 18px; text-align: center; display: none;
+    background: rgba(255,77,109,0.07); border: 2px solid rgba(255,77,109,0.4);
+    animation: pulse 2s ease-in-out infinite, slideUp 0.3s ease;
+  }
+
+  .alerta-icon { font-size: 26px; margin-bottom: 6px; }
+
+  .alerta-text {
+    font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700;
+    color: #ff8099; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+
+  .alerta-detail {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: rgba(255,128,153,0.65); margin-top: 5px;
+  }
+
+  .success-box {
+    border-radius: 14px; padding: 18px; text-align: center; display: none;
+    background: rgba(0,229,160,0.05); border: 1.5px solid rgba(0,229,160,0.25);
+    animation: slideUp 0.3s ease;
+  }
+
+  .success-box-icon { font-size: 26px; margin-bottom: 6px; }
+
+  .success-box-text {
+    font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700;
+    color: var(--green); letter-spacing: 0.04em; text-transform: uppercase;
+  }
+
+  .success-box-detail {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: rgba(0,229,160,0.5); margin-top: 5px;
+  }
+
+  /* Abono card */
+  .abono-card {
+    display: none;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    overflow: hidden;
+    animation: slideUp 0.35s ease;
+  }
+
+  .abono-card.show { display: block; }
+
+  .abono-header {
+    background: linear-gradient(135deg, var(--violet), #5b4fd4);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .abono-header-icon { font-size: 18px; flex-shrink: 0; }
+
+  .abono-header-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.82rem; font-weight: 800;
+    color: #fff; letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .abono-header-badge {
+    margin-left: auto;
+    background: rgba(255,255,255,0.18);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .abono-body {
+    background: rgba(124,106,247,0.06);
+    border: 2px solid rgba(124,106,247,0.3);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    padding: 18px;
+  }
+
+  .abono-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(124,106,247,0.12);
+  }
+
+  .abono-row:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+  .abono-row-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(124,106,247,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .abono-row-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--violet);
+  }
+
+  .abono-row-val.big {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .abono-note {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: rgba(124,106,247,0.08);
+    border-radius: 10px;
+    border: 1px solid rgba(124,106,247,0.2);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(124,106,247,0.7);
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  .abono-note strong { color: var(--violet); }
+
+  /* Retorno real field */
+  .retorno-real-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: none;
+    animation: slideUp 0.3s ease;
+  }
+
+  .retorno-real-section.show { display: block; }
+
+  .retorno-real-label {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text3); margin-bottom: 14px;
+  }
+
+  /* Infração banner */
+  .infracao-banner {
+    display: none;
+    margin-top: 16px;
+    border-radius: 14px;
+    overflow: hidden;
+    animation: shakeIn 0.4s ease, slideUp 0.3s ease;
+  }
+
+  .infracao-banner.show { display: block; }
+
+  .infracao-header {
+    background: var(--red);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .infracao-header-icon { font-size: 20px; flex-shrink: 0; }
+
+  .infracao-header-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem; font-weight: 800;
+    color: #fff; letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .infracao-header-badge {
+    margin-left: auto;
+    background: rgba(0,0,0,0.25);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .infracao-body {
+    background: rgba(255,77,109,0.08);
+    border: 2px solid rgba(255,77,109,0.4);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    padding: 18px;
+  }
+
+  .infracao-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,77,109,0.15);
+  }
+
+  .infracao-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+  .infracao-row-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(255,128,153,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .infracao-row-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #ff8099;
+  }
+
+  .infracao-row-val.highlight {
+    font-size: 1.1rem;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  .infracao-cta {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: rgba(255,77,109,0.12);
+    border-radius: 10px;
+    border: 1px solid rgba(255,77,109,0.25);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255,128,153,0.8);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .infracao-cta strong { color: #ff8099; }
+
+  /* OK retorno */
+  .retorno-ok {
+    display: none;
+    margin-top: 16px;
+    border-radius: 14px;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+  }
+
+  .retorno-ok.show { display: block; }
+
+  .retorno-ok-header {
+    background: var(--green);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .retorno-ok-header-icon { font-size: 20px; flex-shrink: 0; }
+
+  .retorno-ok-header-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem; font-weight: 800;
+    color: #fff; letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .retorno-ok-header-badge {
+    margin-left: auto;
+    background: rgba(0,0,0,0.2);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .retorno-ok-body {
+    background: rgba(0,229,160,0.05);
+    border: 2px solid rgba(0,229,160,0.3);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    padding: 16px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(0,229,160,0.7);
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  .retorno-ok-body strong { color: var(--green); }
+
+  @keyframes shakeIn {
+    0%   { transform: translateX(0); }
+    15%  { transform: translateX(-6px); }
+    30%  { transform: translateX(6px); }
+    45%  { transform: translateX(-4px); }
+    60%  { transform: translateX(4px); }
+    75%  { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,77,109,0.2); }
+    50%       { box-shadow: 0 0 20px 4px rgba(255,77,109,0.15); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .footer {
+    text-align: right; padding: 14px 28px 18px;
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    color: var(--text3); opacity: 0.6; letter-spacing: 0.05em;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Alternar tema">☀️</button>
+    <div class="header-line">
+      <div class="clock-icon">🛌</div>
+      <h1>Retorno ao Expediente</h1>
+    </div>
+    <div class="subtitle">Descanso interjornada · Art. 66 CLT</div>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+
+      <div class="toggle-section">
+        <div class="section-label">⚡ Tipo de ocorrência</div>
+        <div class="jornada-toggle">
+          <button class="toggle-btn active-cyan" id="opt-extensao" onclick="setTipo('extensao')">Extensão de turno</button>
+          <button class="toggle-btn" id="opt-acionamento" onclick="setTipo('acionamento')">Acionamento</button>
+        </div>
+      </div>
+
+      <!-- Extensão -->
+      <div class="fields-grid" id="extensao-fields">
+        <div class="field" style="grid-column:1/-1">
+          <label><span class="field-icon">🚪</span>Saída após extensão de turno</label>
+          <input type="time" id="saida-extensao" value="22:00"/>
+        </div>
+      </div>
+
+      <!-- Acionamento -->
+      <div class="aciona-fields" id="acionamento-fields">
+        <div class="field">
+          <label><span class="field-icon">📲</span>Início do acionamento</label>
+          <input type="time" id="inicio-acionamento" value="02:00"/>
+        </div>
+        <div class="field">
+          <label><span class="field-icon">✅</span>Fim do acionamento</label>
+          <input type="time" id="fim-acionamento" value="04:00"/>
+        </div>
+      </div>
+
+      <!-- Turno -->
+      <div class="fields-grid">
+        <div class="field" style="grid-column:1/-1">
+          <label><span class="field-icon">⏰</span>Horário de Entrada conforme minha escala normal</label>
+          <input type="time" id="inicio-turno" value="08:00"/>
+        </div>
+      </div>
+
+      <button class="btn-calc" onclick="calcular()">→ Calcular retorno mínimo</button>
+      <button class="btn-clear" onclick="limpar()">Limpar campos</button>
+      <div class="error-msg" id="error">⚠ Preencha todos os campos obrigatórios.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Results -->
+    <div class="results-section" id="results">
+
+      <div class="results-header">
+        <div class="results-title">📅 Resultado</div>
+        <div class="status-pill" id="status-pill"><span id="status-text">—</span></div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-card cyan" id="card-retorno">
+          <div class="result-card-label">Retorno mínimo</div>
+          <div class="result-card-time" id="val-retorno">--:--</div>
+          <div class="result-card-sub">após 11h de descanso</div>
+        </div>
+        <div class="result-card green" id="card-turno">
+          <div class="result-card-label">Turno normal</div>
+          <div class="result-card-time" id="val-turno">--:--</div>
+          <div class="result-card-sub">horário contratado</div>
+        </div>
+
+      </div>
+
+      <div class="divider" style="margin-bottom:20px"></div>
+
+      <div class="tl-label">⟶ Linha do tempo</div>
+      <div class="timeline" id="timeline" style="margin-bottom:20px"></div>
+
+      <div class="alerta" id="alerta">
+        <div class="alerta-icon">🚨</div>
+        <div class="alerta-text">Violação do Art. 66 da CLT</div>
+        <div class="alerta-detail" id="alerta-detail"></div>
+      </div>
+
+      <div class="success-box" id="success">
+        <div class="success-box-icon">✅</div>
+        <div class="success-box-text">Descanso respeitado</div>
+        <div class="success-box-detail" id="success-detail"></div>
+      </div>
+
+      <!-- Abono de horas -->
+      <div class="abono-card" id="abono-card">
+        <div class="abono-header">
+          <span class="abono-header-icon">🟣</span>
+          <span class="abono-header-title">Horas abonadas</span>
+          <span class="abono-header-badge" id="abono-badge">0h abonadas</span>
+        </div>
+        <div class="abono-body">
+          <div class="abono-row">
+            <span class="abono-row-label">Horário contratado</span>
+            <span class="abono-row-val" id="abono-turno-normal">--:--</span>
+          </div>
+          <div class="abono-row">
+            <span class="abono-row-label">Entrada efetiva (mínimo CLT)</span>
+            <span class="abono-row-val" id="abono-retorno-min">--:--</span>
+          </div>
+          <div class="abono-row">
+            <span class="abono-row-label">Tempo abonado</span>
+            <span class="abono-row-val big" id="abono-tempo">--</span>
+          </div>
+          <div class="abono-note">
+            <strong>✓ Atraso garantido por lei.</strong> Esse período <strong>não é desconto, não vai para banco de horas</strong> e não pode ser cobrado do trabalhador. O atraso decorre da obrigação legal de descanso (Art. 66 CLT).
+          </div>
+        </div>
+      </div>
+
+      <!-- Verificação de retorno real -->
+      <div class="retorno-real-section" id="retorno-real-section">
+        <div class="retorno-real-label">🔍 Verificar retorno real</div>
+        <div class="field">
+          <label><span class="field-icon">🏁</span>Horário que efetivamente retornou</label>
+          <input type="time" id="retorno-real" oninput="verificarRetorno()"/>
+        </div>
+
+        <div class="infracao-banner" id="infracao-banner">
+          <div class="infracao-header">
+            <span class="infracao-header-icon">🚨</span>
+            <span class="infracao-header-title">Infração — Art. 66 CLT</span>
+            <span class="infracao-header-badge" id="infracao-badge">0 min de infração</span>
+          </div>
+          <div class="infracao-body">
+            <div class="infracao-row">
+              <span class="infracao-row-label">Retorno mínimo exigido</span>
+              <span class="infracao-row-val" id="inf-minimo">--:--</span>
+            </div>
+            <div class="infracao-row">
+              <span class="infracao-row-label">Retorno efetivo</span>
+              <span class="infracao-row-val highlight" id="inf-real">--:--</span>
+            </div>
+            <div class="infracao-row">
+              <span class="infracao-row-label">Descanso efetivo realizado</span>
+              <span class="infracao-row-val highlight" id="inf-descanso">--:--</span>
+            </div>
+            <div class="infracao-row">
+              <span class="infracao-row-label">Déficit de descanso</span>
+              <span class="infracao-row-val highlight" id="inf-deficit">--:--</span>
+            </div>
+            <div class="infracao-cta">
+              <strong>⚠ Tolerância zero.</strong> Qualquer minuto abaixo das 11h configura infração ao Art. 66 da CLT, sujeita a multa administrativa e ação trabalhista. Registre e comunique ao RH.
+            </div>
+          </div>
+        </div>
+
+        <div class="retorno-ok" id="retorno-ok">
+          <div class="retorno-ok-header">
+            <span class="retorno-ok-header-icon">✅</span>
+            <span class="retorno-ok-header-title">Retorno conforme CLT</span>
+            <span class="retorno-ok-header-badge" id="ok-folga">+0 min de folga</span>
+          </div>
+          <div class="retorno-ok-body" id="ok-detail"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">by: b.rosas · CLT art. 66</div>
+  </div>
+</div>
+
+<script>
+  let tipo = 'extensao';
+  let darkMode = true;
+  let retornoMinimoMin = 0;
+  let fimOcorrenciaGlobal = 0;
+
+  function toggleTheme() {
+    darkMode = !darkMode;
+    document.body.classList.toggle('light', !darkMode);
+    document.getElementById('theme-btn').textContent = darkMode ? '☀️' : '🌙';
+  }
+
+  function setTipo(t) {
+    tipo = t;
+    document.getElementById('opt-extensao').className   = 'toggle-btn' + (t === 'extensao'    ? ' active-cyan'   : '');
+    document.getElementById('opt-acionamento').className = 'toggle-btn' + (t === 'acionamento' ? ' active-violet' : '');
+    document.getElementById('extensao-fields').style.display = t === 'extensao' ? 'grid' : 'none';
+    document.getElementById('acionamento-fields').classList.toggle('show', t === 'acionamento');
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('error').style.display = 'none';
+  }
+
+  function toMin(v) {
+    const [h, m] = v.split(':').map(Number);
+    return h * 60 + m;
+  }
+
+  function fmt(min) {
+    const t = ((min % 1440) + 1440) % 1440;
+    return `${String(Math.floor(t/60)).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
+  }
+
+  function diffMin(a, b) {
+    let d = b - a;
+    if (d < 0) d += 1440;
+    return d;
+  }
+
+  function fmtDur(m) {
+    const h = Math.floor(m / 60), mm = m % 60;
+    if (h === 0) return `${mm}min`;
+    if (mm === 0) return `${h}h`;
+    return `${h}h${String(mm).padStart(2,'0')}min`;
+  }
+
+  function calcular() {
+    const err = document.getElementById('error');
+    const res = document.getElementById('results');
+    const inicioTurno = toMin(document.getElementById('inicio-turno').value);
+    const DESCANSO = 660;
+
+    let fimOcorrencia, tl = [];
+
+    if (tipo === 'extensao') {
+      const saida = document.getElementById('saida-extensao').value;
+      if (!saida) { err.style.display = 'block'; res.style.display = 'none'; return; }
+      fimOcorrencia = toMin(saida);
+      tl.push({ time: fmt(fimOcorrencia), desc: 'Saída após extensão de turno', dot: 'cyan' });
+    } else {
+      const ini = document.getElementById('inicio-acionamento').value;
+      const fim = document.getElementById('fim-acionamento').value;
+      if (!ini || !fim) { err.style.display = 'block'; res.style.display = 'none'; return; }
+      const iniMin = toMin(ini), fimMin = toMin(fim);
+      const dur = diffMin(iniMin, fimMin);
+      fimOcorrencia = fimMin;
+      tl.push({ time: fmt(iniMin), desc: 'Início do acionamento', dot: 'cyan' });
+      tl.push({ time: fmt(fimMin), desc: `Fim do acionamento (duração: ${fmtDur(dur)})`, dot: 'cyan' });
+    }
+
+    err.style.display = 'none';
+
+    const retornoFmt = fmt(fimOcorrencia + DESCANSO);
+    const turnoFmt   = fmt(inicioTurno);
+
+    tl.push({ time: fmt(fimOcorrencia + DESCANSO), desc: '11h de descanso completadas (mínimo CLT)', dot: 'green' });
+
+    const intervalo = diffMin(fimOcorrencia, inicioTurno);
+    const normal_ok = intervalo >= DESCANSO;
+    const atraso    = normal_ok ? 0 : DESCANSO - intervalo;
+
+    tl.push({ time: turnoFmt, desc: 'Entrada conforme escala normal', dot: normal_ok ? 'amber' : 'red' });
+
+    // Timeline
+    document.getElementById('timeline').innerHTML = tl.map(i =>
+      `<div class="tl-item dot-${i.dot}">
+        <div class="tl-row">
+          <span class="tl-time">${i.time}</span>
+          <span class="tl-desc">${i.desc}</span>
+        </div>
+      </div>`
+    ).join('');
+
+    // Cards
+    const cardRetorno = document.getElementById('card-retorno');
+    cardRetorno.className = `result-card ${normal_ok ? 'green' : 'amber'}`;
+    document.getElementById('val-retorno').textContent = retornoFmt;
+    document.getElementById('val-turno').textContent   = turnoFmt;
+
+    const cardTurno = document.getElementById('card-turno');
+    cardTurno.className = `result-card ${normal_ok ? 'cyan' : 'red'}`;
+
+
+    // Pill
+    const pill = document.getElementById('status-pill');
+    document.getElementById('status-text').textContent = normal_ok ? '✓ conforme CLT' : '⚠ ajuste necessário';
+    pill.className = `status-pill ${normal_ok ? 'ok' : 'warn'}`;
+
+    // Abono card — shown only when CLT forces entry later than normal shift
+    const abonoCard = document.getElementById('abono-card');
+    if (!normal_ok) {
+      document.getElementById('abono-turno-normal').textContent = turnoFmt;
+      document.getElementById('abono-retorno-min').textContent  = retornoFmt;
+      document.getElementById('abono-tempo').textContent        = fmtDur(atraso);
+      document.getElementById('abono-badge').textContent        = fmtDur(atraso) + ' abonadas';
+      abonoCard.classList.add('show');
+    } else {
+      abonoCard.classList.remove('show');
+    }
+
+    // Boxes
+    const alerta  = document.getElementById('alerta');
+    const success = document.getElementById('success');
+    if (!normal_ok) {
+      document.getElementById('alerta-detail').textContent =
+        `Turno começa às ${turnoFmt}, mas 11h só completam às ${retornoFmt}. Compensar: ${fmtDur(atraso)}.`;
+      alerta.style.display  = 'block';
+      success.style.display = 'none';
+    } else {
+      document.getElementById('success-detail').textContent =
+        `Seu turno começa às ${turnoFmt} — as 11h de descanso são respeitadas normalmente.`;
+      success.style.display = 'block';
+      alerta.style.display  = 'none';
+    }
+
+    res.style.display = 'block';
+
+    // Store globally for retorno real check
+    retornoMinimoMin = fimOcorrencia + DESCANSO;
+    fimOcorrenciaGlobal = fimOcorrencia;
+
+    // Show retorno real section
+    document.getElementById('retorno-real-section').classList.add('show');
+    // Clear previous retorno real
+    document.getElementById('retorno-real').value = '';
+    document.getElementById('infracao-banner').classList.remove('show');
+    document.getElementById('retorno-ok').classList.remove('show');
+  }
+
+  function verificarRetorno() {
+    const val = document.getElementById('retorno-real').value;
+    const infBanner = document.getElementById('infracao-banner');
+    const retOk     = document.getElementById('retorno-ok');
+
+    if (!val) {
+      infBanner.classList.remove('show');
+      retOk.classList.remove('show');
+      return;
+    }
+
+    const retornoRealMin = toMin(val);
+    const DESCANSO = 660;
+
+    // Effective rest = diff from fimOcorrencia to retornoReal
+    const descansoEfetivo = diffMin(fimOcorrenciaGlobal, retornoRealMin);
+    const deficit = DESCANSO - descansoEfetivo;
+    const infringiu = deficit > 0;
+
+    if (infringiu) {
+      // Animate shake by removing/re-adding
+      infBanner.classList.remove('show');
+      void infBanner.offsetWidth;
+      infBanner.classList.add('show');
+      retOk.classList.remove('show');
+
+      document.getElementById('infracao-badge').textContent =
+        deficit === 1 ? '1 min de infração' : fmtDur(deficit) + ' de infração';
+      document.getElementById('inf-minimo').textContent   = fmt(retornoMinimoMin);
+      document.getElementById('inf-real').textContent     = fmt(retornoRealMin);
+      document.getElementById('inf-descanso').textContent = fmtDur(descansoEfetivo);
+      document.getElementById('inf-deficit').textContent  = '−' + fmtDur(deficit);
+    } else {
+      retOk.classList.remove('show');
+      void retOk.offsetWidth;
+      retOk.classList.add('show');
+      infBanner.classList.remove('show');
+
+      const folga = descansoEfetivo - DESCANSO;
+      document.getElementById('ok-folga').textContent =
+        '+' + (folga === 0 ? '0 min' : fmtDur(folga)) + ' acima do mínimo';
+      document.getElementById('ok-detail').innerHTML =
+        'Retorno às <strong>' + fmt(retornoRealMin) + '</strong> — descanso de <strong>' + fmtDur(descansoEfetivo) + '</strong>. ' +
+        (folga === 0
+          ? 'Exatamente no limite mínimo da CLT.'
+          : fmtDur(folga) + ' além do mínimo exigido. Tudo certo!');
+    }
+  }
+
+  function limpar() {
+    ['saida-extensao','inicio-acionamento','fim-acionamento'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('inicio-turno').value = '08:00';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('error').style.display   = 'none';
+  }
+</script>
+</body>
+</html>
